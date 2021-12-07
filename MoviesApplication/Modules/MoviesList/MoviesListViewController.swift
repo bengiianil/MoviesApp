@@ -6,30 +6,31 @@
 //
 
 import UIKit
+import GameController
 
 class MoviesListViewController: BaseViewController<MoviesListViewModel> {
     
-    private var mainComponent: CustomTableView!
-    
+    private var itemCollectionView: ItemCollectionView!
+
     override func prepareViewControllerConfigurations() {
         super.prepareViewControllerConfigurations()
         view.backgroundColor = .systemPink
-        addMainComponent()
+        addItemCollectionView()
         subscribeViewModelListeners()
         viewModel.getMoviesList()
     }
     
-    private func addMainComponent() {
-        mainComponent = CustomTableView()
-        mainComponent.translatesAutoresizingMaskIntoConstraints = false
-        mainComponent.delegate = viewModel
-        view.addSubview(mainComponent)
+    func addItemCollectionView() {
+        itemCollectionView = ItemCollectionView()
+        itemCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        itemCollectionView.delegate = viewModel
+        view.addSubview(itemCollectionView)
         
         NSLayoutConstraint.activate([
-            mainComponent.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            mainComponent.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            mainComponent.topAnchor.constraint(equalTo: view.topAnchor),
-            mainComponent.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            itemCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            itemCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            itemCollectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            itemCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
     }
     
@@ -37,8 +38,9 @@ class MoviesListViewController: BaseViewController<MoviesListViewModel> {
         viewModel.subscribeState { [weak self] state in
             switch state {
             case .done:
-                print("Data is ready.")
-                self?.mainComponent.reloadTableView()
+                DispatchQueue.main.async {
+                    self?.itemCollectionView.reloadCollectionView()
+                }
             case .loading:
                 print("Data is getting.")
             case .failure:

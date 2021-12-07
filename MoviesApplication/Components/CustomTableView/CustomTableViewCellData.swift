@@ -10,17 +10,11 @@ import UIKit
 
 class CustomTableViewCellData: GenericDataProtocol {
     
-    var type: GenericRowType {
-        return cellAction
-    }
-    
     private(set) var labelInfo: LabelPackComponentData
     private(set) var iconInfo: UIImage
-    private let cellAction: GenericRowType
 
-    init(labelInfo: LabelPackComponentData, iconInfo: UIImage, cellAction: GenericRowType) {
+    init(labelInfo: LabelPackComponentData, iconInfo: UIImage) {
         self.labelInfo = labelInfo
         self.iconInfo = iconInfo
-        self.cellAction = cellAction
     }
 }

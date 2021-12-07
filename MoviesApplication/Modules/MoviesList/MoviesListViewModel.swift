@@ -8,60 +8,71 @@
 import Foundation
 import UIKit
 import DefaultNetworkOperationPackage
+import SwiftUI
 
-typealias NowPlayingResponseBlock = (Result<NowPlayingMoviesResponse, ErrorResponse>) -> Void
+typealias NowPlayingResponseBlock = (Result<NowPlayingMovies, ErrorResponse>) -> Void
 
 class MoviesListViewModel {
         
-    private var moviesApiData: [NowPlayingMovies]?
+    private var data: NowPlayingMovies?
+    private var requestData: MoviesRequest?
+    private var moviesState: MoviesListViewStateBlock?
+    private let moviesFormatter: MoviesListDataFormatterProtocol
     
-    private var state: MoviesListViewStateBlock?
+    init(moviesFormatter: MoviesListDataFormatterProtocol) {
+        self.moviesFormatter = moviesFormatter
+    }
+    
     func subscribeState(completion: @escaping MoviesListViewStateBlock) {
-        state = completion
+        moviesState = completion
     }
     
     func getMoviesList() {
-        fireApiCall(with: apiCallHandler)
-    }
-    
-    private func fireApiCall(with completion: @escaping NowPlayingResponseBlock) {
-                   
+        moviesState?(.loading)
         do {
-            let urlRequest = try MoviesApiServiceProvider().returnUrlRequest()
-            APIManager.shared.executeRequest(urlRequest: urlRequest, completion: completion)
-        } catch let error {
-            print("error : \(error)")
+            guard let urlRequest = try? MoviesApiServiceProvider(request: getMoviesRequest()).returnUrlRequest() else { return }
+            fireApiCall(with: urlRequest, with: dataListener)
         }
     }
     
-    private lazy var apiCallHandler: NowPlayingResponseBlock = { [weak self] result in
-         switch result {
-         case .failure(let error):
-             print("error : \(error)")
-         case .success(let response):
-            print("success: \(response)")
-             self?.moviesApiData = response
-         }
-        self?.state?(.done)
+    private func getMoviesRequest() -> MoviesRequest {
+        return MoviesRequest(api_key: requestData?.api_key ?? "f17764a3c10f08fadfab105b3a18f9e9",
+                             language: requestData?.language,
+                             page: requestData?.page ?? 1)
     }
+    
+    private func fireApiCall(with request: URLRequest, with completion: @escaping NowPlayingResponseBlock) {
+        APIManager.shared.executeRequest(urlRequest: request, completion: completion)
+    }
+    
+    // MARK: - CallBack Listener -
+    private func apiCallHandler(from response: NowPlayingMovies) {
+        moviesFormatter.setData(with: response)
+        moviesState?(.done)
+    }
+
+    private lazy var dataListener: (Result<NowPlayingMovies, ErrorResponse>) -> Void = { [weak self] result in
+        switch result {
+        case .failure(let error):
+            print("error : \(error)")
+        case .success(let response):
+            self?.apiCallHandler(from: response)
+        }
+    }
+    
 }
 
-extension MoviesListViewModel: CustomTableViewProtocol {
+extension MoviesListViewModel: ItemProviderProtocol {
     
     func getNumberOfSection() -> Int {
-        return 1
+        return moviesFormatter.getNumberOfSection()
     }
     
     func getNumberOfItem(in section: Int) -> Int {
-        guard let dataUnwrapped = moviesApiData else { return 0 }
-        return dataUnwrapped.count
-        
+        return moviesFormatter.getNumberOfItem(in: section)
     }
     
     func getData(at index: Int) -> GenericDataProtocol? {
-        return nil
-        /*guard let dataUnwrapped = moviesApiData else { return 0 }
-        return dataUnwrapped.
-        */
+        return moviesFormatter.getItem(at: index)
     }
 }

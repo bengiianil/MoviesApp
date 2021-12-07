@@ -49,7 +49,7 @@ class AccountViewModel {
 }
 
 extension AccountViewModel: CustomTableViewProtocol {
-    
+
     func getNumberOfSection() -> Int {
         return 1
     }

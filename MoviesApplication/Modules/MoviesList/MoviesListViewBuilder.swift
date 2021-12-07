@@ -11,7 +11,9 @@ import UIKit
 class MoviesListViewBuilder {
     
     class func build() -> UIViewController {
-        let viewModel = MoviesListViewModel()
+        
+        let formatter = MoviesListDataFormatter()
+        let viewModel = MoviesListViewModel(moviesFormatter: formatter)
         let viewController = MoviesListViewController(viewModel: viewModel)
         viewController.title = "MOVIES"
         viewController.tabBarItem.image = TabBarImages.movies.value

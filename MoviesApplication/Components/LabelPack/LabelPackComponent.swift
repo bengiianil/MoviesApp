@@ -24,7 +24,7 @@ class LabelPackComponent: GenericBaseView<LabelPackComponentData> {
         let title = UILabel()
         title.translatesAutoresizingMaskIntoConstraints = false
         title.textColor = .black
-        title.text = ""
+        title.text = "hey"
         title.lineBreakMode = .byWordWrapping
         title.numberOfLines = 0
         title.contentMode = .center

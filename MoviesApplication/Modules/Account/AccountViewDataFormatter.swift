@@ -25,8 +25,8 @@ class AccountViewDataFormatter: AccountViewDataFormatterProtocol {
                                             .setNumberOfLines(by: 1)
                 )
         
-        return [CustomTableViewCellData(labelInfo: settings, iconInfo: SFSymbolsHelper.gearShape.value!, cellAction: .settings),
-                CustomTableViewCellData(labelInfo: help, iconInfo: SFSymbolsHelper.questionMark.value!, cellAction: .getHelp)]
+        return [CustomTableViewCellData(labelInfo: settings, iconInfo: SFSymbolsHelper.gearShape.value!),
+                CustomTableViewCellData(labelInfo: help, iconInfo: SFSymbolsHelper.questionMark.value!)]
     }
     
     func getAccountHeaderViewData(with completion: @escaping VoidCompletionBlock) -> HeaderViewData {

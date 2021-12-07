@@ -10,10 +10,10 @@ import Foundation
 class MoviesListData: GenericDataProtocol {
     
     private(set) var labelComponentData: LabelPackComponentData
-   // private(set) var imageComponentData: CustomImageViewComponentData
+    private(set) var imageComponentData: CustomImageViewComponentData
 
-    init(labelComponentData: LabelPackComponentData) {
+    init(labelComponentData: LabelPackComponentData, imageComponentData: CustomImageViewComponentData) {
         self.labelComponentData = labelComponentData
-       // self.imageComponentData = imageComponentData
+        self.imageComponentData = imageComponentData
     }
 }

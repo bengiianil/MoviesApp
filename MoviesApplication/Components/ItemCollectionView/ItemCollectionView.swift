@@ -27,28 +27,17 @@ class ItemCollectionView: GenericBaseView<ItemCollectionViewData> {
     }()
     
     private lazy var mainStackView: UIStackView = {
-        let view = UIStackView(arrangedSubviews: [searchBar, componentCollection])
+        let view = UIStackView(arrangedSubviews: [componentCollection])
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.axis = .vertical
-        view.spacing = 10
-        return view
-    }()
-    
-    private lazy var searchBar: UISearchBar = {
-        let view = UISearchBar()
-        view.searchBarStyle = UISearchBar.Style.default
-        view.placeholder = "Search in iTunes"
-        view.delegate = self
-        view.sizeToFit()
-        view.frame = CGRect(x: 10, y: 250, width: (UIScreen.main.bounds.width - 20), height: 10)
-        view.isTranslucent = true
+        view.axis = .horizontal
+        //view.spacing = 10
         return view
     }()
     
     private lazy var componentCollection: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 10, bottom: 10, right: 10)
+        layout.scrollDirection = .horizontal
+        layout.sectionInset = UIEdgeInsets(top: 5, left: 5, bottom: UIScreen.main.bounds.height-00, right: 5)
         let temp = UICollectionView(frame: .zero, collectionViewLayout: layout)
         temp.translatesAutoresizingMaskIntoConstraints = false
         temp.delegate = self
@@ -77,7 +66,7 @@ class ItemCollectionView: GenericBaseView<ItemCollectionViewData> {
             containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
             containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
                         
-            mainStackView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 100),
+            mainStackView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 20),
             mainStackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
             mainStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             mainStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
@@ -96,33 +85,12 @@ class ItemCollectionView: GenericBaseView<ItemCollectionViewData> {
 
 }
 
-
-// MARK: - UISearchBarDelegate -
-extension ItemCollectionView: UISearchBarDelegate {
-    
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        isSearching = true
-    }
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        isSearching = false
-    }
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        isSearching = true
-    }
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        isSearching = false
-    }
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        
-    }
-}
-
 // MARK: - UICollectionViewDelegate, UICollectionViewDataSource -
 extension ItemCollectionView: UICollectionViewDelegate, UICollectionViewDataSource {
-   
+   /*
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: UIScreen.main.bounds.width, height: 10)
-    }
+    }*/
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return delegate?.getNumberOfItem(in: section) ?? 0
@@ -165,8 +133,8 @@ extension ItemCollectionView: UICollectionViewDelegate, UICollectionViewDataSour
 extension ItemCollectionView: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-
-        let width = (UIScreen.main.bounds.width - 40)/2
-        return CGSize(width: width, height: 200)
+        let width = (UIScreen.main.bounds.width)/2
+        let height = (UIScreen.main.bounds.height)
+        return CGSize(width: width, height: 400)
     }
 }

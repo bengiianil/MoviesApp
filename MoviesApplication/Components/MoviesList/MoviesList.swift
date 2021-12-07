@@ -30,7 +30,7 @@ class MoviesList: GenericBaseView<GenericDataProtocol> {
     }()
     
     private lazy var mainStackView: UIStackView = {
-        let view = UIStackView(arrangedSubviews: [nameLabel])
+        let view = UIStackView(arrangedSubviews: [imageComponent, nameLabel])
         view.translatesAutoresizingMaskIntoConstraints = false
         view.isUserInteractionEnabled = true
         view.alignment = .center
@@ -40,14 +40,13 @@ class MoviesList: GenericBaseView<GenericDataProtocol> {
         return view
     }()
     
-    /*
     private lazy var imageComponent: CustomImageViewComponentContainer = {
         let view = CustomImageViewComponentContainer()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.heightAnchor.constraint(equalToConstant: 120).isActive = true
-        view.widthAnchor.constraint(equalToConstant: 120).isActive = true
+       // view.heightAnchor.constraint(equalToConstant: 120).isActive = true
+       // view.widthAnchor.constraint(equalToConstant: 240).isActive = true
         return view
-    }()*/
+    }()
     
     private lazy var nameLabel: LabelPackComponent = {
         let view = LabelPackComponent()
@@ -77,7 +76,7 @@ class MoviesList: GenericBaseView<GenericDataProtocol> {
             containerView.leadingAnchor.constraint(equalTo: shadowContainerView.leadingAnchor),
             containerView.trailingAnchor.constraint(equalTo: shadowContainerView.trailingAnchor),
                         
-            mainStackView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 10),
+            mainStackView.topAnchor.constraint(equalTo: containerView.topAnchor),
             mainStackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
             mainStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             mainStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
@@ -88,7 +87,7 @@ class MoviesList: GenericBaseView<GenericDataProtocol> {
     override func loadDataView() {
         super.loadDataView()
         guard let data = returnData() as? MoviesListData else { return }
-       // imageComponent.setData(by: data.imageComponentData)
+        imageComponent.setData(by: data.imageComponentData)
         nameLabel.setData(by: data.labelComponentData)
     }
 }

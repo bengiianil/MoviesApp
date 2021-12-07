@@ -28,7 +28,7 @@ class ItemCollectionViewCell: BaseCollectionViewCell {
         NSLayoutConstraint.activate([
             contentDisplayer.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             contentDisplayer.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            contentDisplayer.topAnchor.constraint(equalTo: contentView.topAnchor),
+            contentDisplayer.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 30),
             contentDisplayer.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
         ])
     }

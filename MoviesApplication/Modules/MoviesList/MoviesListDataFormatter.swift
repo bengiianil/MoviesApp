@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SwiftUI
 
 class MoviesListDataFormatter: MoviesListDataFormatterProtocol {
     
@@ -22,7 +23,8 @@ class MoviesListDataFormatter: MoviesListDataFormatterProtocol {
     }
     
     func getItem(at index: Int) -> GenericDataProtocol? {
-        return CustomTableViewCellData(labelInfo: LabelPackComponentData(title: list[index].originalTitle ?? "not found", subtitle: list[index].overview ?? "not found"), iconInfo: SFSymbolsHelper.gearShape.value!)
+        return MoviesListData(labelComponentData: LabelPackComponentData(title: list[index].originalTitle ?? "not found", subtitle: ""),
+                              imageComponentData: CustomImageViewComponentData(imageUrl: list[index].backdropURL))
     }
     
     func setData(with response: NowPlayingMovies) {
@@ -30,5 +32,4 @@ class MoviesListDataFormatter: MoviesListDataFormatterProtocol {
         self.list.append(contentsOf: response.results)
     }
 }
-
 

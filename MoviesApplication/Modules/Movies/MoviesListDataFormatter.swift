@@ -11,7 +11,7 @@ import SwiftUI
 
 class MoviesListDataFormatter: MoviesListDataFormatterProtocol {
     
-    private var data: NowPlayingMovies?
+    private var data: AllMovies?
     private var list: [ApiResult] = [ApiResult]()
 
     func getNumberOfSection() -> Int {
@@ -27,7 +27,7 @@ class MoviesListDataFormatter: MoviesListDataFormatterProtocol {
                               imageComponentData: CustomImageViewComponentData(imageUrl: list[index].backdropURL))
     }
     
-    func setData(with response: NowPlayingMovies) {
+    func setData(with response: AllMovies) {
         self.data = response
         self.list.append(contentsOf: response.results)
     }

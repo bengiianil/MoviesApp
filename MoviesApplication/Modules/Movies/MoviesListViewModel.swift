@@ -10,11 +10,11 @@ import UIKit
 import DefaultNetworkOperationPackage
 import SwiftUI
 
-typealias NowPlayingResponseBlock = (Result<NowPlayingMovies, ErrorResponse>) -> Void
+typealias AllMoviesResponseBlock = (Result<AllMovies, ErrorResponse>) -> Void
 
 class MoviesListViewModel {
         
-    private var data: NowPlayingMovies?
+    private var data: AllMovies?
     private var requestData: MoviesRequest?
     private var moviesState: MoviesListViewStateBlock?
     private let moviesFormatter: MoviesListDataFormatterProtocol
@@ -27,10 +27,18 @@ class MoviesListViewModel {
         moviesState = completion
     }
     
-    func getMoviesList() {
+    func getNowPlayingMoviesList() {
         moviesState?(.loading)
         do {
-            guard let urlRequest = try? MoviesApiServiceProvider(request: getMoviesRequest()).returnUrlRequest() else { return }
+            guard let urlRequest = try? NowPlayingApiServiceProvider(request: getMoviesRequest()).returnUrlRequest() else { return }
+            fireApiCall(with: urlRequest, with: dataListener)
+        }
+    }
+    
+    func getPopularMoviesList() {
+        moviesState?(.loading)
+        do {
+            guard let urlRequest = try? PopularApiServiceProvider(request: getMoviesRequest()).returnUrlRequest() else { return }
             fireApiCall(with: urlRequest, with: dataListener)
         }
     }
@@ -41,17 +49,17 @@ class MoviesListViewModel {
                              page: requestData?.page ?? 1)
     }
     
-    private func fireApiCall(with request: URLRequest, with completion: @escaping NowPlayingResponseBlock) {
+    private func fireApiCall(with request: URLRequest, with completion: @escaping AllMoviesResponseBlock) {
         APIManager.shared.executeRequest(urlRequest: request, completion: completion)
     }
     
     // MARK: - CallBack Listener -
-    private func apiCallHandler(from response: NowPlayingMovies) {
+    private func apiCallHandler(from response: AllMovies) {
         moviesFormatter.setData(with: response)
         moviesState?(.done)
     }
 
-    private lazy var dataListener: (Result<NowPlayingMovies, ErrorResponse>) -> Void = { [weak self] result in
+    private lazy var dataListener: (Result<AllMovies, ErrorResponse>) -> Void = { [weak self] result in
         switch result {
         case .failure(let error):
             print("error : \(error)")

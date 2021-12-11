@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct NowPlayingMovies: Codable {
+struct AllMovies: Codable {
     let page: Int?
     let results: [ApiResult]
 
@@ -15,11 +15,6 @@ struct NowPlayingMovies: Codable {
         self.page = page
         self.results = results
     }
-}
-
-// MARK: - Dates
-struct Dates: Codable {
-    let maximum, minimum: String?
 }
 
 // MARK: - Result
@@ -34,6 +29,4 @@ struct ApiResult: Codable {
         case originalTitle = "original_title"
         case overview
     }
-    
-
 }

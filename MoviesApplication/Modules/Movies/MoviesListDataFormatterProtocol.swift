@@ -12,6 +12,6 @@ protocol MoviesListDataFormatterProtocol {
     func getNumberOfSection() -> Int
     func getNumberOfItem(in section: Int) -> Int
     func getItem(at index: Int) -> GenericDataProtocol?
-    func setData(with response: NowPlayingMovies)
+    func setData(with response: AllMovies)
 
 }

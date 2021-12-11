@@ -6,22 +6,22 @@
 //
 
 import UIKit
-import GameController
 
 class MoviesListViewController: BaseViewController<MoviesListViewModel> {
     
-    private var itemCollectionView: ItemCollectionView!
+    private var itemCollectionView: CollectionViews!
 
     override func prepareViewControllerConfigurations() {
         super.prepareViewControllerConfigurations()
         view.backgroundColor = .systemPink
         addItemCollectionView()
         subscribeViewModelListeners()
-        viewModel.getMoviesList()
+        viewModel.getNowPlayingMoviesList()
+        viewModel.getPopularMoviesList()
     }
     
     func addItemCollectionView() {
-        itemCollectionView = ItemCollectionView()
+        itemCollectionView = CollectionViews()
         itemCollectionView.translatesAutoresizingMaskIntoConstraints = false
         itemCollectionView.delegate = viewModel
         view.addSubview(itemCollectionView)
